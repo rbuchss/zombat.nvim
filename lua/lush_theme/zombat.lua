@@ -45,6 +45,72 @@
 local lush = require('lush')
 local hsl = lush.hsl
 
+-- from lua/zombat/ansi_iterm2.lua
+local ansi_colors = {
+  black = hsl("#000000"),
+  red = hsl("#f08072"),
+  green = hsl("#c6e889"),
+  yellow = hsl("#ecdfb1"),
+  blue = hsl("#7fb7f2"),
+  magenta = hsl("#e08cf8"),
+  cyan = hsl("#aafaf7"),
+  white = hsl("#e4e1d8"),
+
+  bright_black = hsl("#404040"),
+  bright_red = hsl("#eca395"),
+  bright_green = hsl("#e6f6a9"),
+  bright_yellow = hsl("#f0e9c3"),
+  bright_blue = hsl("#b9d1fb"),
+  bright_magenta = hsl("#debefa"),
+  bright_cyan = hsl("#cefcf9"),
+  bright_white = hsl("#fefefe"),
+
+  foreground = hsl("#e4e1d8"),
+  background = hsl("#1e1e1e"),
+
+  cursor = hsl("#c7c7c7"),
+  cursor_text = hsl("#feffff"),
+
+  selection_background = hsl("#554c49"),
+  selection_foreground = hsl("#c3c7ca"),
+}
+
+-- from lua/zombat/colors.lua
+local c_step = 20
+
+local c = ansi_colors
+
+-- Add dark color variants not in pallet
+c.dark_black = c.black.darken(c_step)
+c.dark_red = c.red.darken(c_step)
+c.dark_green = c.green.darken(c_step)
+c.dark_yellow = c.yellow.darken(c_step)
+c.dark_blue = c.blue.darken(c_step)
+c.dark_magenta = c.magenta.darken(c_step)
+c.dark_cyan = c.cyan.darken(c_step)
+c.dark_white = c.white.darken(c_step)
+
+-- Extend pallet colors
+-- TODO: See if these should be replaced with the ANSI terminal colors
+c.orange = hsl("#e5786d")
+c.dark_orange = c.orange.darken(c_step)
+c.violet = hsl("#b294bb")
+c.purple = hsl("#d787ff")
+c.grey = hsl("#574b49")
+c.aqua = c.cyan
+c.pink = c.bright_red.lighten(c_step)
+
+-- A few grey scales
+c.grey_1 = hsl("#c3c6ca")
+c.grey_2 = hsl("#9c998e")
+c.grey_3 = hsl("#636066")
+c.grey_4 = hsl("#574b49")
+c.grey_5 = hsl("#444444")
+c.grey_6 = hsl("#32322f")
+
+-- Other colors
+c.error_red = hsl("#ff2026")
+
 -- LSP/Linters mistakenly show `undefined global` errors in the spec, they may
 -- support an annotation like the following. Consult your server documentation.
 ---@diagnostic disable: undefined-global
@@ -63,46 +129,138 @@ local theme = lush(function(injected_functions)
     --
     -- ColorColumn    { }, -- Columns set with 'colorcolumn'
     -- Conceal        { }, -- Placeholder characters substituted for concealed text (see 'conceallevel')
-    -- Cursor         { }, -- Character under the cursor
+    -- ====================
+    -- key: Cursor
+    -- Found in: /Users/russ/Developer/zombat.nvim/lua/lush_theme/zombat_classic.lua
+    Cursor            { bg = c.yellow }, -- Character under the cursor
+    -- ====================
     -- CurSearch      { }, -- Highlighting a search pattern under the cursor (see 'hlsearch')
     -- lCursor        { }, -- Character under the cursor when |language-mapping| is used (see 'guicursor')
     -- CursorIM       { }, -- Like Cursor, but used when in IME mode |CursorIM|
-    -- CursorColumn   { }, -- Screen-column at the cursor, when 'cursorcolumn' is set.
-    -- CursorLine     { }, -- Screen-line at the cursor, when 'cursorline' is set. Low-priority if foreground (ctermfg OR guifg) is not set.
-    -- Directory      { }, -- Directory names (and other special names in listings)
-    -- DiffAdd        { }, -- Diff mode: Added line |diff.txt|
-    -- DiffChange     { }, -- Diff mode: Changed line |diff.txt|
-    -- DiffDelete     { }, -- Diff mode: Deleted line |diff.txt|
-    -- DiffText       { }, -- Diff mode: Changed text within a changed line |diff.txt|
+    -- ====================
+    -- key: CursorColumn
+    -- Found in: /Users/russ/Developer/zombat.nvim/lua/lush_theme/zombat_classic.lua
+    CursorColumn      { Cursor }, -- Screen-column at the cursor, when 'cursorcolumn' is set.
+    -- ====================
+    -- ====================
+    -- key: CursorLine
+    -- Found in: /Users/russ/Developer/zombat.nvim/lua/lush_theme/zombat_classic.lua
+    CursorLine        { bg = c.grey_6 }, -- Screen-line at the cursor, when 'cursorline' is set. Low-priority if foreground (ctermfg OR guifg) is not set.
+    -- ====================
+    -- ====================
+    -- key: Directory
+    -- Found in: /Users/russ/Developer/zombat.nvim/lua/lush_theme/zombat_classic.lua
+    Directory         { fg = c.cyan }, -- Directory names (and other special names in listings)
+    -- ====================
+    -- ====================
+    -- key: DiffAdd
+    -- Found in: /Users/russ/Developer/zombat.nvim/lua/lush_theme/zombat_lush.lua
+    -- DiffAdd           { fg = c.dark_green.readable(), bg = c.dark_green }, -- Diff mode: Added line |diff.txt|
+    -- Found in: /Users/russ/Developer/zombat.nvim/lua/lush_theme/zombat_classic.lua
+    -- DiffAdd          { bg = hsl("#2a0d6a") }, -- Diff mode: Added line |diff.txt|
+    -- ====================
+    -- ====================
+    -- key: DiffChange
+    -- Found in: /Users/russ/Developer/zombat.nvim/lua/lush_theme/zombat_lush.lua
+    -- DiffChange        { bg = c.violet }, -- Diff mode: Changed line |diff.txt|
+    -- Found in: /Users/russ/Developer/zombat.nvim/lua/lush_theme/zombat_classic.lua
+    -- DiffChange       { bg = hsl("#382a37") }, -- Diff mode: Changed line |diff.txt|
+    -- ====================
+    -- ====================
+    -- key: DiffDelete
+    -- Found in: /Users/russ/Developer/zombat.nvim/lua/lush_theme/zombat_lush.lua
+    -- DiffDelete        { fg = c.red.readable(), bg = c.red }, -- Diff mode: Deleted line |diff.txt|
+    -- Found in: /Users/russ/Developer/zombat.nvim/lua/lush_theme/zombat_classic.lua
+    -- DiffDelete       { fg = hsl("#242424"), bg = hsl("#3e3969") }, -- Diff mode: Deleted line |diff.txt|
+    -- ====================
+    -- ====================
+    -- key: DiffText
+    -- Found in: /Users/russ/Developer/zombat.nvim/lua/lush_theme/zombat_lush.lua
+    -- DiffText          { fg = c.magenta.readable(), bg = c.magenta }, -- Diff mode: Changed text within a changed line |diff.txt|
+    -- Found in: /Users/russ/Developer/zombat.nvim/lua/lush_theme/zombat_classic.lua
+    -- DiffText         { bg = hsl("#382a37") }, -- Diff mode: Changed text within a changed line |diff.txt|
+    -- ====================
     -- EndOfBuffer    { }, -- Filler lines (~) after the end of the buffer. By default, this is highlighted like |hl-NonText|.
     -- TermCursor     { }, -- Cursor in a focused terminal
     -- TermCursorNC   { }, -- Cursor in an unfocused terminal
-    -- ErrorMsg       { }, -- Error messages on the command line
-    -- VertSplit      { }, -- Column separating vertically split windows
-    -- Folded         { }, -- Line used for closed folds
-    -- FoldColumn     { }, -- 'foldcolumn'
+    -- ====================
+    -- key: ErrorMsg
+    -- Found in: /Users/russ/Developer/zombat.nvim/lua/lush_theme/zombat_classic.lua
+    ErrorMsg          { fg = c.error_red, bg = c.grey_5, gui = "bold" }, -- Error messages on the command line
+    -- ====================
+    -- ====================
+    -- key: VertSplit
+    -- Found in: /Users/russ/Developer/zombat.nvim/lua/lush_theme/zombat_classic.lua
+    VertSplit         { fg = c.grey_5, bg = c.grey_5 }, -- Column separating vertically split windows
+    -- ====================
+    -- ====================
+    -- key: Folded
+    -- Found in: /Users/russ/Developer/zombat.nvim/lua/lush_theme/zombat_classic.lua
+    Folded            { fg = c.grey_2, bg = c.grey_4 }, -- Line used for closed folds
+    -- ====================
+    -- ====================
+    -- key: FoldColumn
+    -- Found in: /Users/russ/Developer/zombat.nvim/lua/lush_theme/zombat_classic.lua
+    FoldColumn        { Folded }, -- 'foldcolumn'
+    -- ====================
     -- SignColumn     { }, -- Column where |signs| are displayed
     -- IncSearch      { }, -- 'incsearch' highlighting; also used for the text replaced with ":s///c"
     -- Substitute     { }, -- |:substitute| replacement text highlighting
-    -- LineNr         { }, -- Line number for ":number" and ":#" commands, and when 'number' or 'relativenumber' option is set.
+    -- ====================
+    -- key: LineNr
+    -- Found in: /Users/russ/Developer/zombat.nvim/lua/lush_theme/zombat_classic.lua
+    LineNr            { fg = c.grey_4, bg = c.black }, -- Line number for ":number" and ":#" commands, and when 'number' or 'relativenumber' option is set.
+    -- ====================
     -- LineNrAbove    { }, -- Line number for when the 'relativenumber' option is set, above the cursor line
     -- LineNrBelow    { }, -- Line number for when the 'relativenumber' option is set, below the cursor line
     -- CursorLineNr   { }, -- Like LineNr when 'cursorline' or 'relativenumber' is set for the cursor line.
     -- CursorLineFold { }, -- Like FoldColumn when 'cursorline' is set for the cursor line
     -- CursorLineSign { }, -- Like SignColumn when 'cursorline' is set for the cursor line
-    -- MatchParen     { }, -- Character under the cursor or just before it, if it is a paired bracket, and its match. |pi_paren.txt|
+    -- ====================
+    -- key: MatchParen
+    -- Found in: /Users/russ/Developer/zombat.nvim/lua/lush_theme/zombat_classic.lua
+    MatchParen        { fg = c.yellow, bg = c.grey_2, gui = "bold" }, -- Character under the cursor or just before it, if it is a paired bracket, and its match. |pi_paren.txt|
+    -- ====================
     -- ModeMsg        { }, -- 'showmode' message (e.g., "-- INSERT -- ")
     -- MsgArea        { }, -- Area for messages and cmdline
     -- MsgSeparator   { }, -- Separator for scrolled messages, `msgsep` flag of 'display'
     -- MoreMsg        { }, -- |more-prompt|
-    -- NonText        { }, -- '@' at the end of the window, characters from 'showbreak' and other characters that do not really exist in the text (e.g., ">" displayed when a double-wide character doesn't fit at the end of the line). See also |hl-EndOfBuffer|.
-    -- Normal         { }, -- Normal text
-    -- NormalFloat    { }, -- Normal text in floating windows.
-    -- FloatBorder    { }, -- Border of floating windows.
+    -- ====================
+    -- key: NonText
+    -- Found in: /Users/russ/Developer/zombat.nvim/lua/lush_theme/zombat_classic.lua
+    NonText           { LineNr }, -- '@' at the end of the window, characters from 'showbreak' and other characters that do not really exist in the text (e.g., ">" displayed when a double-wide character doesn't fit at the end of the line). See also |hl-EndOfBuffer|.
+    -- ====================
+    -- ====================
+    -- key: Normal
+    -- Found in: /Users/russ/Developer/zombat.nvim/lua/lush_theme/zombat_lush.lua
+    Normal            { bg = c.background, fg = c.foreground }, -- Normal text
+    -- Found in: /Users/russ/Developer/zombat.nvim/lua/lush_theme/zombat_classic.lua
+    -- Normal           { bg = c256mod.background, fg = c256mod.foreground }, -- Normal text
+    -- ====================
+    -- ====================
+    -- key: NormalFloat
+    -- Found in: /Users/russ/Developer/zombat.nvim/lua/lush_theme/zombat_lush.lua
+    -- NormalFloat       { bg = Normal.bg.lighten(10), fg = classic.Special.fg }, -- Normal text in floating windows.
+    NormalFloat       { bg = Normal.bg.lighten(10), fg = Special.fg }, -- Normal text in floating windows.
+    -- ====================
+    -- ====================
+    -- key: FloatBorder
+    -- Found in: /Users/russ/Developer/zombat.nvim/lua/lush_theme/zombat_lush.lua
+    -- FloatBorder       { bg = NormalFloat.bg, fg = classic.Pmenu.fg }, -- Border of floating windows.
+    FloatBorder       { bg = NormalFloat.bg, fg = Pmenu.fg }, -- Border of floating windows.
+    -- ====================
     -- FloatTitle     { }, -- Title of floating windows.
     -- NormalNC       { }, -- normal text in non-current windows
-    -- Pmenu          { }, -- Popup menu: Normal item.
-    -- PmenuSel       { }, -- Popup menu: Selected item.
+    -- ====================
+    -- key: Pmenu
+    -- Found in: /Users/russ/Developer/zombat.nvim/lua/lush_theme/zombat_classic.lua
+    Pmenu             { fg = c.bright_yellow, bg = c.grey_5 }, -- Popup menu: Normal item.
+    -- ====================
+    -- ====================
+    -- key: PmenuSel
+    -- Found in: /Users/russ/Developer/zombat.nvim/lua/lush_theme/zombat_classic.lua
+    PmenuSel          { fg = c.bright_green.readable(), bg = c.bright_green }, -- Popup menu: Selected item.
+    -- ====================
     -- PmenuKind      { }, -- Popup menu: Normal item "kind"
     -- PmenuKindSel   { }, -- Popup menu: Selected item "kind"
     -- PmenuExtra     { }, -- Popup menu: Normal item "extra text"
@@ -111,21 +269,53 @@ local theme = lush(function(injected_functions)
     -- PmenuThumb     { }, -- Popup menu: Thumb of the scrollbar.
     -- Question       { }, -- |hit-enter| prompt and yes/no questions
     -- QuickFixLine   { }, -- Current |quickfix| item in the quickfix window. Combined with |hl-CursorLine| when the cursor is there.
-    -- Search         { }, -- Last search pattern highlighting (see 'hlsearch'). Also used for similar items that need to stand out.
-    -- SpecialKey     { }, -- Unprintable characters: text displayed differently from what it really is. But not 'listchars' whitespace. |hl-Whitespace|
+    -- ====================
+    -- key: Search
+    -- Found in: /Users/russ/Developer/zombat.nvim/lua/lush_theme/zombat_classic.lua
+    Search            { fg = c.purple, bg = c.grey_3 }, -- Last search pattern highlighting (see 'hlsearch'). Also used for similar items that need to stand out.
+    -- ====================
+    -- ====================
+    -- key: SpecialKey
+    -- Found in: /Users/russ/Developer/zombat.nvim/lua/lush_theme/zombat_classic.lua
+    SpecialKey        { fg = c.grey_3, bg = c.grey_6 }, -- Unprintable characters: text displayed differently from what it really is. But not 'listchars' whitespace. |hl-Whitespace|
+    -- ====================
     -- SpellBad       { }, -- Word that is not recognized by the spellchecker. |spell| Combined with the highlighting used otherwise.
     -- SpellCap       { }, -- Word that should start with a capital. |spell| Combined with the highlighting used otherwise.
     -- SpellLocal     { }, -- Word that is recognized by the spellchecker as one that is used in another region. |spell| Combined with the highlighting used otherwise.
     -- SpellRare      { }, -- Word that is recognized by the spellchecker as one that is hardly ever used. |spell| Combined with the highlighting used otherwise.
-    -- StatusLine     { }, -- Status line of current window
-    -- StatusLineNC   { }, -- Status lines of not-current windows. Note: If this is equal to "StatusLine" Vim will use "^^^" in the status line of the current window.
+    -- ====================
+    -- key: StatusLine
+    -- Found in: /Users/russ/Developer/zombat.nvim/lua/lush_theme/zombat_classic.lua
+    StatusLine        { fg = c.bright_yellow, bg = c.grey_5 }, -- Status line of current window
+    -- ====================
+    -- ====================
+    -- key: StatusLineNC
+    -- Found in: /Users/russ/Developer/zombat.nvim/lua/lush_theme/zombat_classic.lua
+    StatusLineNC      { fg = c.grey_2, bg = StatusLine.bg }, -- Status lines of not-current windows. Note: If this is equal to "StatusLine" Vim will use "^^^" in the status line of the current window.
+    -- ====================
     -- TabLine        { }, -- Tab pages line, not active tab page label
     -- TabLineFill    { }, -- Tab pages line, where there are no labels
     -- TabLineSel     { }, -- Tab pages line, active tab page label
-    -- Title          { }, -- Titles for output from ":set all", ":autocmd" etc.
-    -- Visual         { }, -- Visual mode selection
-    -- VisualNOS      { }, -- Visual mode selection when vim is "Not Owning the Selection".
-    -- WarningMsg     { }, -- Warning messages
+    -- ====================
+    -- key: Title
+    -- Found in: /Users/russ/Developer/zombat.nvim/lua/lush_theme/zombat_classic.lua
+    Title             { fg = c.bright_yellow, gui = "bold" }, -- Titles for output from ":set all", ":autocmd" etc.
+    -- ====================
+    -- ====================
+    -- key: Visual
+    -- Found in: /Users/russ/Developer/zombat.nvim/lua/lush_theme/zombat_classic.lua
+    Visual            { fg = c.grey_1, bg = c.grey_4 }, -- Visual mode selection
+    -- ====================
+    -- ====================
+    -- key: VisualNOS
+    -- Found in: /Users/russ/Developer/zombat.nvim/lua/lush_theme/zombat_classic.lua
+    VisualNOS         { fg = c.grey_1, bg = c.grey_5 }, -- Visual mode selection when vim is "Not Owning the Selection".
+    -- ====================
+    -- ====================
+    -- key: WarningMsg
+    -- Found in: /Users/russ/Developer/zombat.nvim/lua/lush_theme/zombat_classic.lua
+    WarningMsg        { fg = c.bright_red }, -- Warning messages
+    -- ====================
     -- Whitespace     { }, -- "nbsp", "space", "tab" and "trail" in 'listchars'
     -- Winseparator   { }, -- Separator between window splits. Inherts from |hl-VertSplit| by default, which it will replace eventually.
     -- WildMenu       { }, -- Current match in 'wildmenu' completion
@@ -140,48 +330,113 @@ local theme = lush(function(injected_functions)
     --
     -- Uncomment and edit if you want more specific syntax highlighting.
 
-    -- Comment        { }, -- Any comment
+    -- ====================
+    -- key: Comment
+    -- Found in: /Users/russ/Developer/zombat.nvim/lua/lush_theme/zombat_classic.lua
+    Comment           { fg = c.grey_2 }, -- Any comment
+    -- ====================
 
-    -- Constant       { }, -- (*) Any constant
-    -- String         { }, --   A string constant: "this is a string"
+    -- ====================
+    -- key: Constant
+    -- Found in: /Users/russ/Developer/zombat.nvim/lua/lush_theme/zombat_classic.lua
+    Constant          { fg = c.orange }, -- (*) Any constant
+    -- ====================
+    -- ====================
+    -- key: String
+    -- Found in: /Users/russ/Developer/zombat.nvim/lua/lush_theme/zombat_classic.lua
+    String            { ctermfg=113, fg=hsl('#95e454') }, --   A string constant: "this is a string"
+    -- ====================
     -- Character      { }, --   A character constant: 'c', '\n'
-    -- Number         { }, --   A number constant: 234, 0xff
-    -- Boolean        { }, --   A boolean constant: TRUE, false
+    -- ====================
+    -- key: Number
+    -- Found in: /Users/russ/Developer/zombat.nvim/lua/lush_theme/zombat_classic.lua
+    Number            { fg = c.orange }, --   A number constant: 234, 0xff
+    -- ====================
+    -- ====================
+    -- key: Boolean
+    -- Found in: /Users/russ/Developer/zombat.nvim/lua/lush_theme/zombat_lush.lua
+    Boolean           { fg = c.bright_red }, --   A boolean constant: TRUE, false
+    -- ====================
     -- Float          { }, --   A floating point constant: 2.3e10
 
     -- Identifier     { }, -- (*) Any variable name
-    -- Function       { }, --   Function name (also: methods for classes)
+    Identifier     { fg = c.bright_green }, -- (*) Any variable name
+    -- ====================
+    -- key: Function
+    -- Found in: /Users/russ/Developer/zombat.nvim/lua/lush_theme/zombat_classic.lua
+    Function          { fg = c.bright_green }, --   Function name (also: methods for classes)
+    -- ====================
 
-    -- Statement      { }, -- (*) Any statement
+    -- ====================
+    -- key: Statement
+    -- Found in: /Users/russ/Developer/zombat.nvim/lua/lush_theme/zombat_classic.lua
+    Statement         { fg = c.blue }, -- (*) Any statement
+    -- ====================
     -- Conditional    { }, --   if, then, else, endif, switch, etc.
     -- Repeat         { }, --   for, do, while, etc.
-    -- Label          { }, --   case, default, etc.
-    -- Operator       { }, --   "sizeof", "+", "*", etc.
-    -- Keyword        { }, --   any other keyword
-    -- Exception      { }, --   try, catch, throw
+    -- ====================
+    -- key: Label
+    -- Found in: /Users/russ/Developer/zombat.nvim/lua/lush_theme/zombat_lush.lua
+    Label             { fg = c.magenta }, --   case, default, etc.
+    -- ====================
+    -- ====================
+    -- key: Operator
+    -- Found in: /Users/russ/Developer/zombat.nvim/lua/lush_theme/zombat_lush.lua
+    Operator          { fg = c.blue }, --   "sizeof", "+", "*", etc.
+    -- ====================
+    -- ====================
+    -- key: Keyword
+    -- Found in: /Users/russ/Developer/zombat.nvim/lua/lush_theme/zombat_classic.lua
+    Keyword           { fg = c.blue }, --   any other keyword
+    -- ====================
+    -- ====================
+    -- key: Exception
+    -- Found in: /Users/russ/Developer/zombat.nvim/lua/lush_theme/zombat_lush.lua
+    Exception         { fg = c.orange }, --   try, catch, throw
+    -- ====================
 
-    -- PreProc        { }, -- (*) Generic Preprocessor
+    -- ====================
+    -- key: PreProc
+    -- Found in: /Users/russ/Developer/zombat.nvim/lua/lush_theme/zombat_classic.lua
+    PreProc           { fg = c.orange }, -- (*) Generic Preprocessor
+    -- ====================
     -- Include        { }, --   Preprocessor #include
     -- Define         { }, --   Preprocessor #define
     -- Macro          { }, --   Same as Define
     -- PreCondit      { }, --   Preprocessor #if, #else, #endif, etc.
 
-    -- Type           { }, -- (*) int, long, char, etc.
+    -- ====================
+    -- key: Type
+    -- Found in: /Users/russ/Developer/zombat.nvim/lua/lush_theme/zombat_classic.lua
+    Type              { fg = c.yellow }, -- (*) int, long, char, etc.
+    -- ====================
     -- StorageClass   { }, --   static, register, volatile, etc.
     -- Structure      { }, --   struct, union, enum, etc.
     -- Typedef        { }, --   A typedef
 
-    -- Special        { }, -- (*) Any special symbol
+    -- ====================
+    -- key: Special
+    -- Found in: /Users/russ/Developer/zombat.nvim/lua/lush_theme/zombat_classic.lua
+    Special           { fg = c.yellow }, -- (*) Any special symbol
+    -- ====================
     -- SpecialChar    { }, --   Special character in a constant
     -- Tag            { }, --   You can use CTRL-] on this
-    -- Delimiter      { }, --   Character that needs attention
+    -- ====================
+    -- key: Delimiter
+    -- Found in: /Users/russ/Developer/zombat.nvim/lua/lush_theme/zombat_lush.lua
+    Delimiter         { fg = c.purple }, --   Character that needs attention
+    -- ====================
     -- SpecialComment { }, --   Special things inside a comment (e.g. '\n')
     -- Debug          { }, --   Debugging statements
 
     -- Underlined     { gui = "underline" }, -- Text that stands out, HTML links
     -- Ignore         { }, -- Left blank, hidden |hl-Ignore| (NOTE: May be invisible here in template)
     -- Error          { }, -- Any erroneous construct
-    -- Todo           { }, -- Anything that needs extra attention; mostly the keywords TODO FIXME and XXX
+    -- ====================
+    -- key: Todo
+    -- Found in: /Users/russ/Developer/zombat.nvim/lua/lush_theme/zombat_classic.lua
+    Todo              { fg = c.grey_3 }, -- Anything that needs extra attention; mostly the keywords TODO FIXME and XXX
+    -- ====================
 
     -- These groups are for the native LSP client and diagnostic system. Some
     -- other LSP clients may use these groups, or use their own. Consult your
@@ -198,10 +453,26 @@ local theme = lush(function(injected_functions)
 
     -- See :h diagnostic-highlights, some groups may not be listed, submit a PR fix to lush-template!
     --
-    -- DiagnosticError            { } , -- Used as the base highlight group. Other Diagnostic highlights link to this by default (except Underline)
-    -- DiagnosticWarn             { } , -- Used as the base highlight group. Other Diagnostic highlights link to this by default (except Underline)
-    -- DiagnosticInfo             { } , -- Used as the base highlight group. Other Diagnostic highlights link to this by default (except Underline)
-    -- DiagnosticHint             { } , -- Used as the base highlight group. Other Diagnostic highlights link to this by default (except Underline)
+    -- ====================
+    -- key: DiagnosticError
+    -- Found in: /Users/russ/Developer/zombat.nvim/lua/lush_theme/zombat_lush.lua
+    DiagnosticError               { fg = c.dark_orange } , -- Used as the base highlight group. Other Diagnostic highlights link to this by default (except Underline)
+    -- ====================
+    -- ====================
+    -- key: DiagnosticWarn
+    -- Found in: /Users/russ/Developer/zombat.nvim/lua/lush_theme/zombat_lush.lua
+    DiagnosticWarn                { fg = c.dark_yellow } , -- Used as the base highlight group. Other Diagnostic highlights link to this by default (except Underline)
+    -- ====================
+    -- ====================
+    -- key: DiagnosticInfo
+    -- Found in: /Users/russ/Developer/zombat.nvim/lua/lush_theme/zombat_lush.lua
+    DiagnosticInfo                { fg = c.dark_green } , -- Used as the base highlight group. Other Diagnostic highlights link to this by default (except Underline)
+    -- ====================
+    -- ====================
+    -- key: DiagnosticHint
+    -- Found in: /Users/russ/Developer/zombat.nvim/lua/lush_theme/zombat_lush.lua
+    DiagnosticHint                { fg = c.dark_blue } , -- Used as the base highlight group. Other Diagnostic highlights link to this by default (except Underline)
+    -- ====================
     -- DiagnosticOk               { } , -- Used as the base highlight group. Other Diagnostic highlights link to this by default (except Underline)
     -- DiagnosticVirtualTextError { } , -- Used for "Error" diagnostic virtual text.
     -- DiagnosticVirtualTextWarn  { } , -- Used for "Warn" diagnostic virtual text.
@@ -241,51 +512,117 @@ local theme = lush(function(injected_functions)
     --
     -- For more information see https://github.com/rktjmp/lush.nvim/issues/109
 
-    -- sym"@text.literal"      { }, -- Comment
-    -- sym"@text.reference"    { }, -- Identifier
-    -- sym"@text.title"        { }, -- Title
-    -- sym"@text.uri"          { }, -- Underlined
-    -- sym"@text.underline"    { }, -- Underlined
-    -- sym"@text.todo"         { }, -- Todo
-    -- sym"@comment"           { }, -- Comment
-    -- sym"@punctuation"       { }, -- Delimiter
-    -- sym"@constant"          { }, -- Constant
-    -- sym"@constant.builtin"  { }, -- Special
-    -- sym"@constant.macro"    { }, -- Define
-    -- sym"@define"            { }, -- Define
-    -- sym"@macro"             { }, -- Macro
-    -- sym"@string"            { }, -- String
-    -- sym"@string.escape"     { }, -- SpecialChar
-    -- sym"@string.special"    { }, -- SpecialChar
-    -- sym"@character"         { }, -- Character
-    -- sym"@character.special" { }, -- SpecialChar
-    -- sym"@number"            { }, -- Number
-    -- sym"@boolean"           { }, -- Boolean
-    -- sym"@float"             { }, -- Float
-    -- sym"@function"          { }, -- Function
-    -- sym"@function.builtin"  { }, -- Special
-    -- sym"@function.macro"    { }, -- Macro
-    -- sym"@parameter"         { }, -- Identifier
-    -- sym"@method"            { }, -- Function
-    -- sym"@field"             { }, -- Identifier
-    -- sym"@property"          { }, -- Identifier
-    -- sym"@constructor"       { }, -- Special
-    -- sym"@conditional"       { }, -- Conditional
-    -- sym"@repeat"            { }, -- Repeat
-    -- sym"@label"             { }, -- Label
-    -- sym"@operator"          { }, -- Operator
-    -- sym"@keyword"           { }, -- Keyword
-    -- sym"@exception"         { }, -- Exception
-    -- sym"@variable"          { }, -- Identifier
-    -- sym"@type"              { }, -- Type
-    -- sym"@type.definition"   { }, -- Typedef
-    -- sym"@storageclass"      { }, -- StorageClass
-    -- sym"@structure"         { }, -- Structure
-    -- sym"@namespace"         { }, -- Identifier
-    -- sym"@include"           { }, -- Include
-    -- sym"@preproc"           { }, -- PreProc
-    -- sym"@debug"             { }, -- Debug
-    -- sym"@tag"               { }, -- Tag
+    -- -- TSAnnotation         { },    -- For C++/Dart attributes, annotations that can be attached to the code to denote some kind of meta information.
+    -- -- TSAttribute          { },    -- (unstable) TODO: docs
+    -- -- TSBoolean            { },    -- For booleans.
+    -- -- TSCharacter          { },    -- For characters.
+    -- -- TSComment            { },    -- For comment blocks.
+    -- -- TSConstructor        { },    -- For constructor calls and definitions: ` { }` in Lua, and Java constructors.
+    -- -- TSConditional        { },    -- For keywords related to conditionnals.
+    -- -- TSConstant           { },    -- For constants
+    -- -- TSConstBuiltin       { },    -- For constant that are built in the language: `nil` in Lua.
+    -- -- TSConstMacro         { },    -- For constants that are defined by macros: `NULL` in C.
+    -- -- TSError              { },    -- For syntax/parser errors.
+    -- -- TSException          { },    -- For exception related keywords.
+    -- -- TSField              { },    -- For fields.
+    -- -- TSFloat              { },    -- For floats.
+    -- TSFunction({ classic.Function }), -- For function (calls and definitions).
+    -- -- TSFuncBuiltin        { },    -- For builtin functions: `table.insert` in Lua.
+    -- -- TSFuncMacro          { },    -- For macro defined fuctions (calls and definitions): each `macro_rules` in Rust.
+    -- -- TSInclude            { },    -- For includes: `#include` in C, `use` or `extern crate` in Rust, or `require` in Lua.
+    -- TSKeyword({ classic.Keyword }), -- For keywords that don't fall in previous categories.
+    -- -- TSKeywordFunction    { },    -- For keywords used to define a fuction.
+    -- -- TSLabel              { },    -- For labels: `label:` in C and `:label:` in Lua.
+    -- TSMethod({ classic.Function }), -- For method calls and definitions.
+    -- -- TSNamespace          { },    -- For identifiers referring to modules and namespaces.
+    -- -- TSNone               { },    -- TODO: docs
+    -- -- TSNumber             { },    -- For all numbers
+    -- -- TSOperator           { },    -- For any operator: `+`, but also `->` and `*` in C.
+    -- -- TSParameter          { },    -- For parameters of a function.
+    -- -- TSParameterReference { },    -- For references to parameters of a function.
+    -- TSProperty({ classic.Identifier }), -- Same as `TSField`.
+    -- -- TSPunctDelimiter     { },    -- For delimiters ie: `.`
+    -- -- TSPunctBracket       { },    -- For brackets and parens.
+    -- -- TSPunctSpecial       { },    -- For special punctutation that does not fall in the catagories before.
+    -- -- TSRepeat             { },    -- For keywords related to loops.
+    -- -- TSString             { },    -- For strings.
+    -- -- TSStringRegex        { },    -- For regexes.
+    -- -- TSStringEscape       { },    -- For escape characters within a string.
+    -- -- TSSymbol             { },    -- For identifiers referring to symbols or atoms.
+    -- TSType({ classic.Type }), -- For types.
+    -- -- TSTypeBuiltin        { },    -- For builtin types.
+    -- TSVariable({ classic.Identifier }), -- Any variable name that does not have another highlight.
+    -- -- TSVariableBuiltin    { },    -- Variable names that are defined by the languages, like `this` or `self`.
+
+    -- -- TSTag                { },    -- Tags like html tag names.
+    -- -- TSTagDelimiter       { },    -- Tag delimiter like `<` `>` `/`
+    -- TSText({ fg = Normal.fg }), -- For strings considered text in a markup language.
+    -- -- TSEmphasis           { },    -- For text to be represented with emphasis.
+    -- -- TSUnderline          { },    -- For text to be represented with an underline.
+    -- -- TSStrike             { },    -- For strikethrough text.
+    -- -- TSTitle              { },    -- Text that is part of a title.
+    -- -- TSLiteral            { },    -- Literal text.
+    -- -- TSURI                { },    -- Any URI like a link or email.
+
+    -- sym"@text"         { TSText },
+    -- -- sym"@text.literal"      { }, -- Comment
+    -- -- sym"@text.reference"    { }, -- Identifier
+    -- -- sym"@text.title"        { }, -- Title
+    -- -- sym"@text.uri"          { }, -- Underlined
+    -- -- sym"@text.underline"    { }, -- Underlined
+    -- -- sym"@text.todo"         { }, -- Todo
+    -- -- sym"@comment"           { }, -- Comment
+    -- -- sym"@punctuation"       { }, -- Delimiter
+    -- -- sym"@constant"          { }, -- Constant
+    -- -- sym"@constant.builtin"  { }, -- Special
+    -- -- sym"@constant.macro"    { }, -- Define
+    -- -- sym"@define"            { }, -- Define
+    -- -- sym"@macro"             { }, -- Macro
+    -- -- sym"@string"            { }, -- String
+    -- -- sym"@string.escape"     { }, -- SpecialChar
+    -- -- sym"@string.special"    { }, -- SpecialChar
+    -- -- sym"@character"         { }, -- Character
+    -- -- sym"@character.special" { }, -- SpecialChar
+    -- -- sym"@number"            { }, -- Number
+    -- -- sym"@boolean"           { }, -- Boolean
+    -- -- sym"@float"             { }, -- Float
+    -- sym"@function"          { TSFunction }, -- Function
+    -- -- sym"@function.builtin"  { }, -- Special
+    -- -- sym"@function.macro"    { }, -- Macro
+    -- -- sym"@parameter"         { }, -- Identifier
+    -- sym"@method"            { TSMethod }, -- Function
+    -- -- sym"@field"             { }, -- Identifier
+    -- sym"@property"          { TSProperty }, -- Identifier
+    -- -- sym"@constructor"       { }, -- Special
+    -- -- sym"@conditional"       { }, -- Conditional
+    -- -- sym"@repeat"            { }, -- Repeat
+    -- -- sym"@label"             { }, -- Label
+    -- -- sym"@operator"          { }, -- Operator
+    -- sym"@keyword"           { TSKeyword }, -- Keyword
+    -- -- sym"@exception"         { }, -- Exception
+    -- sym"@variable"          { TSVariable }, -- Identifier
+    -- sym"@type"              { TSType }, -- Type
+    -- -- sym"@type.definition"   { }, -- Typedef
+    -- -- sym"@storageclass"      { }, -- StorageClass
+    -- -- sym"@structure"         { }, -- Structure
+    -- -- sym"@namespace"         { }, -- Identifier
+    -- -- sym"@include"           { }, -- Include
+    -- -- sym"@preproc"           { }, -- PreProc
+    -- -- sym"@debug"             { }, -- Debug
+    -- -- sym"@tag"               { }, -- Tag
+
+    -- -- cmp highlights
+    -- CmpItemAbbrDeprecated({ fg = c.bright_green, gui = "strikethrough" }),
+    -- CmpItemAbbrMatch({ fg = c.bright_green }),
+    -- CmpItemAbbrMatchFuzzy({ CmpItemAbbrMatch }),
+    -- CmpItemKindVariable({ TSVariable }),
+    -- CmpItemKindInterface({ TSType }),
+    -- CmpItemKindText({ TSText }),
+    -- CmpItemKindFunction({ TSFunction }),
+    -- CmpItemKindMethod({ TSMethod }),
+    -- CmpItemKindKeyword({ TSKeyword }),
+    -- CmpItemKindProperty({ TSProperty }),
+    -- -- CmpItemKindUnit         { Normal },
 }
 end)
 
