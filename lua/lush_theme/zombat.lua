@@ -174,7 +174,7 @@ local theme = lush(function(injected_functions)
     Special           { fg = hsl('#eadead'), }, -- (*) Any special symbol
     -- SpecialChar    { }, --   Special character in a constant
     -- Tag            { }, --   You can use CTRL-] on this
-    Delimiter         { fg = hsl('#d787ff') }, --   Character that needs attention
+    Delimiter         { fg = hsl('#c678dd') }, --   Character that needs attention
     -- SpecialComment { }, --   Special things inside a comment (e.g. '\n')
     -- Debug          { }, --   Debugging statements
 
