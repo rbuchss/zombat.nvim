@@ -69,7 +69,7 @@ local theme = lush(function(injected_functions)
     -- CursorIM       { }, -- Like Cursor, but used when in IME mode |CursorIM|
     CursorColumn      ( CursorLine ), -- Screen-column at the cursor, when 'cursorcolumn' is set.
     CursorLine        { bg = hsl('#32322f'), }, -- Screen-line at the cursor, when 'cursorline' is set. Low-priority if foreground (ctermfg OR guifg) is not set.
-    Directory         { fg = hsl("#90fdf8") }, -- Directory names (and other special names in listings)
+    Directory         { fg = hsl('#90fdf8') }, -- Directory names (and other special names in listings)
     -- DiffAdd        { }, -- Diff mode: Added line |diff.txt|
     -- DiffChange     { }, -- Diff mode: Changed line |diff.txt|
     -- DiffDelete     { }, -- Diff mode: Deleted line |diff.txt|
@@ -77,7 +77,7 @@ local theme = lush(function(injected_functions)
     -- EndOfBuffer    { }, -- Filler lines (~) after the end of the buffer. By default, this is highlighted like |hl-NonText|.
     -- TermCursor     { }, -- Cursor in a focused terminal
     -- TermCursorNC   { }, -- Cursor in an unfocused terminal
-    ErrorMsg          { fg = hsl('#ff2026'), bg = hsl('#3a3a3a'), gui = 'bold', }, -- Error messages on the command line
+    ErrorMsg          { fg = hsl('#e5786d'), gui = 'bold', }, -- Error messages on the command line
     VertSplit         { fg = hsl('#444444'), bg = hsl('#444444'), }, -- Column separating vertically split windows
     Folded            { fg = hsl('#a0a8b0'), bg = hsl('#3a4046'), }, -- Line used for closed folds
     FoldColumn        ( Folded ), -- 'foldcolumn'
@@ -125,7 +125,7 @@ local theme = lush(function(injected_functions)
     Title             { fg = hsl('#ffffd7'), gui = 'bold', }, -- Titles for output from ":set all", ":autocmd" etc.
     Visual            { fg = hsl('#c3c6ca'), bg = hsl('#554d4b'), }, -- Visual mode selection
     VisualNOS         { fg = hsl('#c3c6ca'), bg = hsl('#303030'), }, -- Visual mode selection when vim is "Not Owning the Selection".
-    WarningMsg        { fg = hsl('#ff5f55'), }, -- Warning messages
+    WarningMsg        { fg = hsl('#f2c68a'), }, -- Warning messages
     -- Whitespace     { }, -- "nbsp", "space", "tab" and "trail" in 'listchars'
     -- Winseparator   { }, -- Separator between window splits. Inherts from |hl-VertSplit| by default, which it will replace eventually.
     -- WildMenu       { }, -- Current match in 'wildmenu' completion
@@ -146,21 +146,21 @@ local theme = lush(function(injected_functions)
     String            { fg = hsl('#95e454'), }, --   A string constant: "this is a string"
     -- Character      { }, --   A character constant: 'c', '\n'
     Number            { fg = hsl('#e5786d'), }, --   A number constant: 234, 0xff
-    Boolean           { fg = hsl("#ff786c").lighten(20) }, --   A boolean constant: TRUE, false
+    Boolean           { fg = hsl('#ff786c').lighten(20) }, --   A boolean constant: TRUE, false
     -- Float          { }, --   A floating point constant: 2.3e10
 
-    Identifier        { fg = hsl("#efdeab") }, -- (*) Any variable name
+    Identifier        { fg = hsl('#efdeab') }, -- (*) Any variable name
     Function          { fg = hsl('#cae982'), }, --   Function name (also: methods for classes)
 
     Statement         { fg = hsl('#88b8f6'), }, -- (*) Any statement
     -- Conditional    { }, --   if, then, else, endif, switch, etc.
     -- Repeat         { }, --   for, do, while, etc.
     Label             { fg = hsl('#88b8f6').lighten(60) }, --   case, default, etc.
-    Operator          { fg = hsl("#88b8f6") }, --   "sizeof", "+", "*", etc.
+    Operator          { fg = hsl('#88b8f6') }, --   "sizeof", "+", "*", etc.
     Keyword           { fg = hsl('#88b8f6'), }, --   any other keyword
-    Exception         { fg = hsl("#e5786d") }, --   try, catch, throw
+    Exception         { fg = hsl('#e5786d') }, --   try, catch, throw
 
-    PreProc           { fg = hsl('#e5786d'), }, -- (*) Generic Preprocessor
+    PreProc           { fg = hsl('#e5786d').lighten(50), }, -- (*) Generic Preprocessor
     -- Include        { }, --   Preprocessor #include
     -- Define         { }, --   Preprocessor #define
     -- Macro          { }, --   Same as Define
@@ -174,7 +174,7 @@ local theme = lush(function(injected_functions)
     Special           { fg = hsl('#eadead'), }, -- (*) Any special symbol
     -- SpecialChar    { }, --   Special character in a constant
     -- Tag            { }, --   You can use CTRL-] on this
-    Delimiter         { fg = hsl("#d787ff") }, --   Character that needs attention
+    Delimiter         { fg = hsl('#d787ff') }, --   Character that needs attention
     -- SpecialComment { }, --   Special things inside a comment (e.g. '\n')
     -- Debug          { }, --   Debugging statements
 
